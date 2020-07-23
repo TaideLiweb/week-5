@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3.3.2/dist/vue-loading.css" />
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+            crossorigin="anonymous"
+        />
+    </head>
+    <style>
+        #app {
+            width: 900px;
+        }
+    </style>
+    <body>
+        <div id="app" class="container">
+            <validation-observer v-slot="{invalid}">
+                <form @submit.prevent="clickme">
+                    <validation-provider rules="required" v-slot="{errors, classes}">
+                        <label class="mt-3" for="name">姓名</label>
+                        <input id="name" :class="classes" type="text" name="name" v-model="name" class="form-control" />
+                        <span class="invalid-feedback">{{errors[0]}}</span>
+                    </validation-provider>
+
+                    <validation-provider rules="required|email" v-slot="{errors, classes}">
+                        <label for="email">電子信箱</label>
+                        <input
+                            id="email"
+                            :class="classes"
+                            type="text"
+                            name="email"
+                            v-model="email"
+                            class="form-control"
+                        />
+                        <span class="invalid-feedback">{{errors[0]}}</span>
+                    </validation-provider>
+                    <validation-provider rules="required|min:8" v-slot="{errors, classes}">
+                        <label for="tel">電話</label>
+                        <input id="tel" :class="classes" type="text" name="tel" v-model="tel" class="form-control" />
+                        <span class="invalid-feedback">{{errors[0]}}</span>
+                    </validation-provider>
+                    <validation-provider rules="required" v-slot="{errors, classes}">
+                        <label for="address">地址</label>
+                        <input
+                            id="address"
+                            :class="classes"
+                            type="text"
+                            name="address"
+                            v-model="address"
+                            class="form-control"
+                        />
+                        <span class="invalid-feedback">{{errors[0]}}</span>
+                    </validation-provider>
+                    <label for="payment">付款方式</label>
+                    <select id="payment" type="text" name="payment" v-model="payment" class="form-control">
+                        <option value="" disabled>請選擇付款方式</option>
+                        <option value="WebATM">WebATM</option>
+                        <option value="ATM">ATM</option>
+                        <option value="CVS">CVS</option>
+                        <option value="Barcode">Barcode</option>
+                        <option value="Credit">Credit</option>
+                        <option value="ApplePay">ApplePay</option>
+                        <option value="GooglePay">GooglePay</option>
+                    </select>
+                    <label for="message">留言</label>
+                    <textarea id="message" type="text" name="message" v-model="message" class="form-control"></textarea>
+                    <button type="submit" class="btn btn-primary mt-3" :disabled="invalid">按我</button>
+                </form>
+            </validation-observer>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3.3.2/dist/vue-loading.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/3.3.0/vee-validate.full.min.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+    <script type="module">
+        import zh_TW from './zh_TW.js'
+        Vue.component('loading', VueLoading)
+        Vue.component('ValidationProvider', VeeValidate.ValidationProvider)
+        Vue.component('ValidationObserver', VeeValidate.ValidationObserver)
+        VeeValidate.configure({
+            classes: {
+                valid: 'is-valid',
+                invalid: 'is-invalid',
+            },
+        })
+        VeeValidate.localize('tw', zh_TW)
+        new Vue({
+            el: '#app',
+            data: {
+                name: '',
+                email: '',
+                tel: '',
+                address: '',
+                payment: '',
+                message: '',
+            },
+            methods: {
+                clickme() {
+                    console.log('送出')
+                },
+            },
+        })
+    </script>
+</html>
